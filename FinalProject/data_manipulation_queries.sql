@@ -25,7 +25,6 @@ UPDATE Users
 SET username = @usernameInput,
     email = @emailInput,
     password_hash = @passwordHashInput,
-    join_date = @joinDateInput
 WHERE user_id = @user_idInput;
 
 -- DELETE:
@@ -65,7 +64,6 @@ UPDATE StudySets
 SET user_id   = @owner_user_idInput,
     title     = @titleInput,
     subject   = @subjectInput,
-    created_at = @createdAtInput
 WHERE set_id = @set_idInput;
 
 -- DELETE:
@@ -134,7 +132,6 @@ WHERE quiz_id = @quiz_idInput;
 UPDATE Quizzes
 SET user_id      = @quiz_owner_user_idInput,
     score        = @scoreInput,
-    attempt_date = @attemptDateInput
 WHERE quiz_id = @quiz_idInput;
 
 -- DELETE:
