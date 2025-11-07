@@ -52,7 +52,7 @@
                     <td>{{this.taker_name}}</td>
                     <td>
                         {{#if this.score}}
-                            <span class="score-badge {{#if (gt this.score 89)}}score-a{{else}}{{#if (gt this.score 79)}}score-b{{else}}{{#if (gt this.score 69)}}score-c{{else}}score-d{{/if}}{{/if}}{{/if}}">
+                            <span class="score-badge" data-score="{{this.score}}">
                                 {{this.score}}%
                             </span>
                         {{else}}
@@ -112,26 +112,6 @@
     font-weight: 700;
 }
 
-.score-a {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.score-b {
-    background-color: #cce5ff;
-    color: #004085;
-}
-
-.score-c {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.score-d {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
 .score-pending {
     background-color: #e2e3e5;
     color: #383d41;
@@ -139,8 +119,27 @@
 </style>
 
 <script>
-// Handlebars helper function for score comparison (simulated in JS)
-// Since we can't add helpers in .hbs file, we'll style via classes
+// Color code scores after page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Color code all score badges based on value
+    document.querySelectorAll('.score-badge[data-score]').forEach(function(badge) {
+        const score = parseFloat(badge.getAttribute('data-score'));
+        
+        if (score >= 90) {
+            badge.style.backgroundColor = '#d4edda';
+            badge.style.color = '#155724';
+        } else if (score >= 80) {
+            badge.style.backgroundColor = '#cce5ff';
+            badge.style.color = '#004085';
+        } else if (score >= 70) {
+            badge.style.backgroundColor = '#fff3cd';
+            badge.style.color = '#856404';
+        } else {
+            badge.style.backgroundColor = '#f8d7da';
+            badge.style.color = '#721c24';
+        }
+    });
+});
 
 // Show update form with quiz data
 function showUpdateForm(quizId) {
