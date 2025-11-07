@@ -1,0 +1,196 @@
+<div class="page-container">
+    <h2>Study Sets Management</h2>
+    <p class="page-description">Manage collections of flashcards grouped by topic or course.</p>
+
+    {{!-- Add New Study Set Form --}}
+    <div class="form-section">
+        <h3>Create New Study Set</h3>
+        <form id="add-studyset-form" method="POST" action="/add-studyset">
+            <div class="form-group">
+                <label for="user_id">Owner (User):</label>
+                <select id="user_id" name="user_id" required>
+                    <option value="">-- Select Owner --</option>
+                    {{#each users}}
+                    <option value="{{this.user_id}}">{{this.username}}</option>
+                    {{/each}}
+                </select>
+                <small>Who owns this study set?</small>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required maxlength="100">
+                <small>Name of the study set (e.g., "CS340 - SQL Basics")</small>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" maxlength="50">
+                <small>Optional subject or course name</small>
+            </div>
+
+            <div class="form-group">
+                <label for="created_at">Created Date:</label>
+                <input type="datetime-local" id="created_at" name="created_at" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Study Set</button>
+        </form>
+    </div>
+
+    {{!-- Browse Study Sets Table --}}
+    <div class="table-section">
+        <h3>Existing Study Sets</h3>
+        <table id="studysets-table">
+            <thead>
+                <tr>
+                    <th>Set ID</th>
+                    <th>Title</th>
+                    <th>Subject</th>
+                    <th>Owner</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data}}
+                <tr data-set-id="{{this.set_id}}">
+                    <td>{{this.set_id}}</td>
+                    <td>{{this.title}}</td>
+                    <td>{{this.subject}}</td>
+                    <td>{{this.owner_name}}</td>
+                    <td>{{this.created_at}}</td>
+                    <td>
+                        <button class="btn btn-small btn-edit" onclick="showUpdateForm({{this.set_id}})">Edit</button>
+                        <button class="btn btn-small btn-delete" onclick="deleteStudySet({{this.set_id}})">Delete</button>
+                    </td>
+                </tr>
+                {{/each}}
+                {{#unless data}}
+                <tr>
+                    <td colspan="6" style="text-align: center;">No study sets found. Create one to get started!</td>
+                </tr>
+                {{/unless}}
+            </tbody>
+        </table>
+    </div>
+
+    {{!-- Update Study Set Form (Hidden by default) --}}
+    <div id="update-studyset-section" class="form-section" style="display: none;">
+        <h3>Update Study Set</h3>
+        <form id="update-studyset-form">
+            <input type="hidden" id="update-set-id" name="set_id">
+            
+            <div class="form-group">
+                <label for="update-user-id">Owner (User):</label>
+                <select id="update-user-id" name="user_id" required>
+                    <option value="">-- Select Owner --</option>
+                    {{#each users}}
+                    <option value="{{this.user_id}}">{{this.username}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="update-title">Title:</label>
+                <input type="text" id="update-title" name="title" required maxlength="100">
+            </div>
+
+            <div class="form-group">
+                <label for="update-subject">Subject:</label>
+                <input type="text" id="update-subject" name="subject" maxlength="50">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Study Set</button>
+            <button type="button" class="btn btn-secondary" onclick="cancelUpdate()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script>
+// Show update form with study set data
+function showUpdateForm(setId) {
+    fetch('/studysets/' + setId)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('update-set-id').value = data.set_id;
+            document.getElementById('update-user-id').value = data.user_id;
+            document.getElementById('update-title').value = data.title;
+            document.getElementById('update-subject').value = data.subject || '';
+            
+            // Show the update form
+            document.getElementById('update-studyset-section').style.display = 'block';
+            document.getElementById('update-studyset-section').scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error loading study set data');
+        });
+}
+
+// Cancel update
+function cancelUpdate() {
+    document.getElementById('update-studyset-section').style.display = 'none';
+    document.getElementById('update-studyset-form').reset();
+}
+
+// Handle update form submission
+document.getElementById('update-studyset-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    let formData = {
+        set_id: document.getElementById('update-set-id').value,
+        user_id: document.getElementById('update-user-id').value,
+        title: document.getElementById('update-title').value,
+        subject: document.getElementById('update-subject').value
+    };
+    
+    fetch('/update-studyset', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Study set updated successfully!');
+            location.reload();
+        } else {
+            alert('Error updating study set');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating study set');
+    });
+});
+
+// Delete study set
+function deleteStudySet(setId) {
+    if (confirm('Are you sure you want to delete this study set? This will also delete all flashcards in this set due to CASCADE constraints.')) {
+        fetch('/delete-studyset/' + setId, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Study set deleted successfully!');
+                document.querySelector(`tr[data-set-id="${setId}"]`).remove();
+            } else {
+                alert('Error deleting study set');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting study set');
+        });
+    }
+}
+
+// Set current datetime for created_at field
+document.addEventListener('DOMContentLoaded', function() {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById('created_at').value = now.toISOString().slice(0, 16);
+});
+</script>
