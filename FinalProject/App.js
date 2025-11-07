@@ -18,7 +18,7 @@ var db = require('./database/db-connector')
 
 // Middleware to parse form data
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(urlencoded({extended: true}));
 
 // Static files (CSS, images, etc.)
 app.use(express.static('public'));
