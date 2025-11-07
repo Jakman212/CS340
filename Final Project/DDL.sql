@@ -73,7 +73,9 @@ CREATE TABLE Flashcards (
 CREATE TABLE Quizzes (
   quiz_id      INT AUTO_INCREMENT PRIMARY KEY,
   user_id      INT NOT NULL,
-  score        FLOAT(4,2),
+  score DECIMAL(5,2) NULL,
+  CONSTRAINT chk_score 
+    CHECK (score IS NULL OR (score >= 0 AND score <= 100)),
   attempt_date DATETIME NOT NULL,
   CONSTRAINT fk_quizzes_user
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
@@ -186,3 +188,4 @@ INSERT INTO Quiz_Flashcards (quiz_id, card_id, question_order) VALUES
 -- ============================================================
 SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;
+
