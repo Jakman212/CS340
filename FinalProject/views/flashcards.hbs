@@ -2,46 +2,6 @@
     <h2>Flashcards Management</h2>
     <p class="page-description">Create and manage individual study questions and answers.</p>
 
-    {{!-- Add New Flashcard Form --}}
-    <div class="form-section">
-        <h3>Create New Flashcard</h3>
-        <form id="add-flashcard-form" method="POST" action="/add-flashcard">
-            <div class="form-group">
-                <label for="set_id">Study Set:</label>
-                <select id="set_id" name="set_id" required>
-                    <option value="">-- Select Study Set --</option>
-                    {{#each studysets}}
-                    <option value="{{this.set_id}}">{{this.title}}</option>
-                    {{/each}}
-                </select>
-                <small>Which study set does this flashcard belong to?</small>
-            </div>
-
-            <div class="form-group">
-                <label for="front_text">Front (Question):</label>
-                <textarea id="front_text" name="front_text" rows="3" required></textarea>
-                <small>The question or prompt</small>
-            </div>
-
-            <div class="form-group">
-                <label for="back_text">Back (Answer):</label>
-                <textarea id="back_text" name="back_text" rows="3" required></textarea>
-                <small>The answer or explanation</small>
-            </div>
-
-            <div class="form-group">
-                <label for="difficulty_level">Difficulty Level:</label>
-                <select id="difficulty_level" name="difficulty_level">
-                    <option value="easy" selected>Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Create Flashcard</button>
-        </form>
-    </div>
-
     {{!-- Browse Flashcards Table --}}
     <div class="table-section">
         <h3>Existing Flashcards</h3>
@@ -81,6 +41,46 @@
                 {{/unless}}
             </tbody>
         </table>
+    </div>
+
+    {{!-- Add New Flashcard Form --}}
+    <div class="form-section">
+        <h3>Create New Flashcard</h3>
+        <form id="add-flashcard-form" method="POST" action="/add-flashcard">
+            <div class="form-group">
+                <label for="set_id">Study Set:</label>
+                <select id="set_id" name="set_id" required>
+                    <option value="">-- Select Study Set --</option>
+                    {{#each studysets}}
+                    <option value="{{this.set_id}}">{{this.title}}</option>
+                    {{/each}}
+                </select>
+                <small>Which study set does this flashcard belong to?</small>
+            </div>
+
+            <div class="form-group">
+                <label for="front_text">Front (Question):</label>
+                <textarea id="front_text" name="front_text" rows="3" required></textarea>
+                <small>The question or prompt</small>
+            </div>
+
+            <div class="form-group">
+                <label for="back_text">Back (Answer):</label>
+                <textarea id="back_text" name="back_text" rows="3" required></textarea>
+                <small>The answer or explanation</small>
+            </div>
+
+            <div class="form-group">
+                <label for="difficulty_level">Difficulty Level:</label>
+                <select id="difficulty_level" name="difficulty_level">
+                    <option value="easy" selected>Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Flashcard</button>
+        </form>
     </div>
 
     {{!-- Update Flashcard Form (Hidden by default) --}}
