@@ -2,42 +2,6 @@
     <h2>Study Sets Management</h2>
     <p class="page-description">Manage collections of flashcards grouped by topic or course.</p>
 
-    {{!-- Add New Study Set Form --}}
-    <div class="form-section">
-        <h3>Create New Study Set</h3>
-        <form id="add-studyset-form" method="POST" action="/add-studyset">
-            <div class="form-group">
-                <label for="user_id">Owner (User):</label>
-                <select id="user_id" name="user_id" required>
-                    <option value="">-- Select Owner --</option>
-                    {{#each users}}
-                    <option value="{{this.user_id}}">{{this.username}}</option>
-                    {{/each}}
-                </select>
-                <small>Who owns this study set?</small>
-            </div>
-
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required maxlength="100">
-                <small>Name of the study set (e.g., "CS340 - SQL Basics")</small>
-            </div>
-
-            <div class="form-group">
-                <label for="subject">Subject:</label>
-                <input type="text" id="subject" name="subject" maxlength="50">
-                <small>Optional subject or course name</small>
-            </div>
-
-            <div class="form-group">
-                <label for="created_at">Created Date:</label>
-                <input type="datetime-local" id="created_at" name="created_at" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Create Study Set</button>
-        </form>
-    </div>
-
     {{!-- Browse Study Sets Table --}}
     <div class="table-section">
         <h3>Existing Study Sets</h3>
@@ -73,6 +37,42 @@
                 {{/unless}}
             </tbody>
         </table>
+    </div>
+
+    {{!-- Add New Study Set Form --}}
+    <div class="form-section">
+        <h3>Create New Study Set</h3>
+        <form id="add-studyset-form" method="POST" action="/add-studyset">
+            <div class="form-group">
+                <label for="user_id">Owner (User):</label>
+                <select id="user_id" name="user_id" required>
+                    <option value="">-- Select Owner --</option>
+                    {{#each users}}
+                    <option value="{{this.user_id}}">{{this.username}}</option>
+                    {{/each}}
+                </select>
+                <small>Who owns this study set?</small>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required maxlength="100">
+                <small>Name of the study set (e.g., "CS340 - SQL Basics")</small>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" maxlength="50">
+                <small>Optional subject or course name</small>
+            </div>
+
+            <div class="form-group">
+                <label for="created_at">Created Date:</label>
+                <input type="datetime-local" id="created_at" name="created_at" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Study Set</button>
+        </form>
     </div>
 
     {{!-- Update Study Set Form (Hidden by default) --}}
