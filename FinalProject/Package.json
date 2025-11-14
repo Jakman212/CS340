@@ -4,8 +4,9 @@
     "description": "CS340 Study Application - Group 69",
     "main": "app.js",
     "scripts": {
-        "start": "node app.js",
-        "dev": "nodemon app.js"
+        "development": "npx nodemon app.js",
+        "production": "npx forever start app.js",
+        "stop_production": "npx forever stop app.js"
     },
     "keywords": [
         "study", 
