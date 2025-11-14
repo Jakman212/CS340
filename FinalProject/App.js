@@ -1,6 +1,6 @@
 // app.js
 // Main Express application for Study Application
-
+// Will update comment blocks as routes are added
 // Express
 var express = require('express');
 var app = express();
