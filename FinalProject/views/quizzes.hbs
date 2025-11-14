@@ -22,7 +22,7 @@
                     <td>{{this.taker_name}}</td>
                     <td>
                         {{#if this.score}}
-                            <span class="score-badge {{#if (gt this.score 89)}}score-a{{else}}{{#if (gt this.score 79)}}score-b{{else}}{{#if (gt this.score 69)}}score-c{{else}}score-d{{/if}}{{/if}}{{/if}}">
+                            <span class="score-badge" data-score="{{this.score}}">
                                 {{this.score}}%
                             </span>
                         {{else}}
@@ -139,8 +139,29 @@
 </style>
 
 <script>
-// Handlebars helper function for score comparison (simulated in JS)
-// Since we can't add helpers in .hbs file, we'll style via classes
+// Apply score color classes after page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Color code all score badges based on value
+    document.querySelectorAll('.score-badge[data-score]').forEach(function(badge) {
+        const score = parseFloat(badge.getAttribute('data-score'));
+        
+        // Apply appropriate class based on score
+        if (score > 89) {
+            badge.classList.add('score-a');
+        } else if (score > 79) {
+            badge.classList.add('score-b');
+        } else if (score > 69) {
+            badge.classList.add('score-c');
+        } else {
+            badge.classList.add('score-d');
+        }
+    });
+    
+    // Set current datetime for attempt_date field
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById('attempt_date').value = now.toISOString().slice(0, 16);
+});
 
 // Show update form with quiz data
 function showUpdateForm(quizId) {
@@ -218,11 +239,4 @@ function deleteQuiz(quizId) {
         });
     }
 }
-
-// Set current datetime for attempt_date field
-document.addEventListener('DOMContentLoaded', function() {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    document.getElementById('attempt_date').value = now.toISOString().slice(0, 16);
-});
 </script>
