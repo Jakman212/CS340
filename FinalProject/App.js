@@ -481,6 +481,25 @@ app.delete('/delete-quiz/:id', function(req, res) {
     });
 });
 
+// ==================== RESET DATABASE ROUTES ====================
+
+app.get('/reset-database', async function (req, res) {
+    try {
+        console.log('Resetting database...');
+        await db.query('CALL sp_reset_database();');
+        console.log('Database reset successfully!');
+        res.send(`
+            <h1>✅ Database Reset Successfully!</h1>
+            <p>All tables have been dropped and recreated with sample data.</p>
+            <a href="/">Go to Home</a> | 
+            <a href="/users">View Users</a>
+        `);
+    } catch (error) {
+        console.error('Error resetting database:', error);
+        res.status(500).send('Error resetting database: ' + error.message);
+    }
+});
+
 /*
     LISTENER
 */
