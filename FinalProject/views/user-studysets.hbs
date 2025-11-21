@@ -1,0 +1,69 @@
+<h1>User Study Sets - Shared Access</h1>
+
+<p class="page-description">
+    Manage which users have access to which study sets. Share study sets with other users to collaborate.
+</p>
+
+{{! READ - Display all user-studyset relationships }}
+<h2>Current Shared Study Sets</h2>
+
+{{#if relationships}}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Study Set</th>
+            <th>Shared Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each relationships}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.username}}</td>
+            <td>{{this.studyset_title}}</td>
+            <td>{{this.shared_at}}</td>
+            <td>
+                {{! DELETE form - will be functional in next step }}
+                <form class="delete-form" method="POST" action="/user-studysets/delete/{{this.id}}">
+                    <button type="submit" class="btn-delete">Remove Access</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p class="no-data">No shared study sets yet. Use the form below to share a study set with a user.</p>
+{{/if}}
+
+{{! CREATE - Form to share study set with user }}
+<h2>Share Study Set with User</h2>
+
+<form class="cuForm" id="share-studyset-form" method="POST" action="/user-studysets/create">
+    <label for="user_id">Select User:</label>
+    <select name="user_id" id="user_id" required>
+        <option value="" disabled selected>Choose a user...</option>
+        {{#each users}}
+        <option value="{{this.user_id}}">{{this.username}}</option>
+        {{/each}}
+    </select>
+
+    <label for="studyset_id">Select Study Set:</label>
+    <select name="studyset_id" id="studyset_id" required>
+        <option value="" disabled selected>Choose a study set...</option>
+        {{#each studysets}}
+        <option value="{{this.studyset_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <button type="submit" class="btn-submit">Share Study Set</button>
+</form>
+
+{{! UPDATE - Not typically needed for junction tables }}
+<h2>Note</h2>
+<p class="info-note">
+    To modify access, remove the existing relationship and create a new one if needed.
+</p>

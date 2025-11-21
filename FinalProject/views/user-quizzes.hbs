@@ -1,0 +1,94 @@
+<h1>User Quiz Attempts</h1>
+
+<p class="page-description">
+    Track quiz attempts by users, including scores and completion dates. View quiz history and performance.
+</p>
+
+{{! READ - Display all quiz attempts }}
+<h2>Quiz Attempt History</h2>
+
+{{#if attempts}}
+<table>
+    <thead>
+        <tr>
+            <th>Attempt ID</th>
+            <th>User</th>
+            <th>Quiz</th>
+            <th>Score</th>
+            <th>Date Taken</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each attempts}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.username}}</td>
+            <td>{{this.quiz_title}}</td>
+            <td>
+                {{#if this.score}}
+                    {{this.score}}%
+                {{else}}
+                    Not Scored
+                {{/if}}
+            </td>
+            <td>{{this.taken_at}}</td>
+            <td>
+                {{! DELETE form - will be functional in next step }}
+                <form class="delete-form" method="POST" action="/user-quizzes/delete/{{this.id}}">
+                    <button type="submit" class="btn-delete">Delete Attempt</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p class="no-data">No quiz attempts recorded yet. Use the form below to add a quiz attempt.</p>
+{{/if}}
+
+{{! CREATE - Form to record quiz attempt }}
+<h2>Record Quiz Attempt</h2>
+
+<form class="cuForm" id="create-quiz-attempt-form" method="POST" action="/user-quizzes/create">
+    <label for="user_id">Select User:</label>
+    <select name="user_id" id="user_id" required>
+        <option value="" disabled selected>Choose a user...</option>
+        {{#each users}}
+        <option value="{{this.user_id}}">{{this.username}}</option>
+        {{/each}}
+    </select>
+
+    <label for="quiz_id">Select Quiz:</label>
+    <select name="quiz_id" id="quiz_id" required>
+        <option value="" disabled selected>Choose a quiz...</option>
+        {{#each quizzes}}
+        <option value="{{this.quiz_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for="score">Score (%):</label>
+    <input type="number" name="score" id="score" min="0" max="100" placeholder="Enter score 0-100" />
+
+    <button type="submit" class="btn-submit">Record Quiz Attempt</button>
+</form>
+
+{{! UPDATE - Form to update quiz score }}
+<h2>Update Quiz Attempt Score</h2>
+
+<form class="cuForm" id="update-quiz-attempt-form" method="POST" action="/user-quizzes/update">
+    <label for="update_attempt_id">Select Quiz Attempt:</label>
+    <select name="attempt_id" id="update_attempt_id" required>
+        <option value="" disabled selected>Choose an attempt to update...</option>
+        {{#each attempts}}
+        <option value="{{this.id}}">
+            {{this.username}} - {{this.quiz_title}} ({{this.taken_at}})
+        </option>
+        {{/each}}
+    </select>
+
+    <label for="update_score">New Score (%):</label>
+    <input type="number" name="score" id="update_score" min="0" max="100" required placeholder="Enter new score" />
+
+    <button type="submit" class="btn-update">Update Score</button>
+</form>

@@ -1,0 +1,83 @@
+<h1>Quiz Flashcard Assignments</h1>
+
+<p class="page-description">
+    Manage which flashcards are included in each quiz. Build quizzes by assigning flashcards from study sets.
+</p>
+
+{{! READ - Display all quiz-flashcard assignments }}
+<h2>Current Quiz Flashcard Assignments</h2>
+
+{{#if assignments}}
+<table>
+    <thead>
+        <tr>
+            <th>Assignment ID</th>
+            <th>Quiz</th>
+            <th>Flashcard Question</th>
+            <th>Study Set</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each assignments}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.quiz_title}}</td>
+            <td>{{this.question}}</td>
+            <td>{{this.studyset_title}}</td>
+            <td>
+                {{! DELETE form - will be functional in next step }}
+                <form class="delete-form" method="POST" action="/quiz-flashcards/delete/{{this.id}}">
+                    <button type="submit" class="btn-delete">Remove from Quiz</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p class="no-data">No flashcards assigned to quizzes yet. Use the form below to add flashcards to a quiz.</p>
+{{/if}}
+
+{{! CREATE - Form to assign flashcard to quiz }}
+<h2>Add Flashcard to Quiz</h2>
+
+<form class="cuForm" id="assign-flashcard-form" method="POST" action="/quiz-flashcards/create">
+    <label for="quiz_id">Select Quiz:</label>
+    <select name="quiz_id" id="quiz_id" required>
+        <option value="" disabled selected>Choose a quiz...</option>
+        {{#each quizzes}}
+        <option value="{{this.quiz_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for="flashcard_id">Select Flashcard:</label>
+    <select name="flashcard_id" id="flashcard_id" required>
+        <option value="" disabled selected>Choose a flashcard...</option>
+        {{#each flashcards}}
+        <option value="{{this.flashcard_id}}">
+            {{this.question}} (from {{this.studyset_title}})
+        </option>
+        {{/each}}
+    </select>
+
+    <button type="submit" class="btn-submit">Add Flashcard to Quiz</button>
+</form>
+
+{{! Filter/View Options }}
+<h2>View by Quiz</h2>
+
+<form class="cuForm" id="filter-by-quiz-form" method="GET" action="/quiz-flashcards">
+    <label for="filter_quiz_id">Filter by Quiz:</label>
+    <select name="quiz_id" id="filter_quiz_id" onchange="this.form.submit()">
+        <option value="">All Quizzes</option>
+        {{#each quizzes}}
+        <option value="{{this.quiz_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+</form>
+
+<p class="info-note">
+    <strong>Tip:</strong> Flashcards must belong to a study set before they can be added to a quiz. 
+    Create flashcards in the Flashcards page first.
+</p>

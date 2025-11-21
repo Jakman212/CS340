@@ -1,6 +1,8 @@
 // app.js
 // Main Express application for Study Application
-// Will update comment blocks as routes are added
+// Citation: Based on CS340 starter code and Node.js example
+// Modified for Study Application database project
+
 // Express
 var express = require('express');
 var app = express();
@@ -36,7 +38,6 @@ app.get('/', function(req, res) {
 
 // Browse Users
 app.get('/users', function(req, res) {
-    // Query to get all users
     let query1 = "SELECT user_id, username, email, join_date FROM Users ORDER BY user_id;";
     
     db.pool.query(query1, function(error, rows, fields) {
@@ -45,7 +46,6 @@ app.get('/users', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.render('users', {data: rows});
     });
 });
@@ -53,15 +53,9 @@ app.get('/users', function(req, res) {
 // Add New User
 app.post('/add-user', function(req, res) {
     let data = req.body;
-    
     let query1 = `INSERT INTO Users (username, email, password_hash, join_date) 
                   VALUES (?, ?, ?, ?)`;
-    let values = [
-        data['username'],
-        data['email'],
-        data['password_hash'],
-        data['join_date']
-    ];
+    let values = [data['username'], data['email'], data['password_hash'], data['join_date']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -69,7 +63,6 @@ app.post('/add-user', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.redirect('/users');
     });
 });
@@ -85,7 +78,6 @@ app.get('/users/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.json(rows[0]);
     });
 });
@@ -93,16 +85,8 @@ app.get('/users/:id', function(req, res) {
 // Update User
 app.put('/update-user', function(req, res) {
     let data = req.body;
-    
-    let query1 = `UPDATE Users 
-                  SET username = ?, email = ?, password_hash = ? 
-                  WHERE user_id = ?`;
-    let values = [
-        data['username'],
-        data['email'],
-        data['password_hash'],
-        data['user_id']
-    ];
+    let query1 = `UPDATE Users SET username = ?, email = ?, password_hash = ? WHERE user_id = ?`;
+    let values = [data['username'], data['email'], data['password_hash'], data['user_id']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -110,7 +94,6 @@ app.put('/update-user', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(200);
     });
 });
@@ -126,7 +109,6 @@ app.delete('/delete-user/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(204);
     });
 });
@@ -135,14 +117,12 @@ app.delete('/delete-user/:id', function(req, res) {
 
 // Browse StudySets
 app.get('/studysets', function(req, res) {
-    // Query to get all study sets with owner information
     let query1 = `SELECT StudySets.set_id, StudySets.title, StudySets.subject, 
                          StudySets.created_at, Users.username as owner_name, StudySets.user_id
                   FROM StudySets 
                   JOIN Users ON StudySets.user_id = Users.user_id 
                   ORDER BY StudySets.set_id;`;
     
-    // Query to get all users for the dropdown
     let query2 = "SELECT user_id, username FROM Users ORDER BY username;";
     
     db.pool.query(query1, function(error, rows, fields) {
@@ -160,9 +140,7 @@ app.get('/studysets', function(req, res) {
                 res.sendStatus(500);
                 return;
             }
-            
-            let users = rows;
-            res.render('studysets', {data: studysets, users: users});
+            res.render('studysets', {data: studysets, users: rows});
         });
     });
 });
@@ -170,15 +148,9 @@ app.get('/studysets', function(req, res) {
 // Add New StudySet
 app.post('/add-studyset', function(req, res) {
     let data = req.body;
-    
     let query1 = `INSERT INTO StudySets (user_id, title, subject, created_at) 
                   VALUES (?, ?, ?, ?)`;
-    let values = [
-        data['user_id'],
-        data['title'],
-        data['subject'],
-        data['created_at']
-    ];
+    let values = [data['user_id'], data['title'], data['subject'], data['created_at']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -186,12 +158,11 @@ app.post('/add-studyset', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.redirect('/studysets');
     });
 });
 
-// Get Single StudySet (for update form)
+// Get Single StudySet
 app.get('/studysets/:id', function(req, res) {
     let setId = req.params.id;
     let query1 = "SELECT * FROM StudySets WHERE set_id = ?";
@@ -202,7 +173,6 @@ app.get('/studysets/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.json(rows[0]);
     });
 });
@@ -210,16 +180,8 @@ app.get('/studysets/:id', function(req, res) {
 // Update StudySet
 app.put('/update-studyset', function(req, res) {
     let data = req.body;
-    
-    let query1 = `UPDATE StudySets 
-                  SET user_id = ?, title = ?, subject = ? 
-                  WHERE set_id = ?`;
-    let values = [
-        data['user_id'],
-        data['title'],
-        data['subject'],
-        data['set_id']
-    ];
+    let query1 = `UPDATE StudySets SET user_id = ?, title = ?, subject = ? WHERE set_id = ?`;
+    let values = [data['user_id'], data['title'], data['subject'], data['set_id']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -227,7 +189,6 @@ app.put('/update-studyset', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(200);
     });
 });
@@ -243,7 +204,6 @@ app.delete('/delete-studyset/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(204);
     });
 });
@@ -252,14 +212,12 @@ app.delete('/delete-studyset/:id', function(req, res) {
 
 // Browse Flashcards
 app.get('/flashcards', function(req, res) {
-    // Query to get all flashcards with study set information
     let query1 = `SELECT Flashcards.card_id, Flashcards.front_text, Flashcards.back_text, 
                          Flashcards.difficulty_level, StudySets.title as set_title, Flashcards.set_id
                   FROM Flashcards 
                   JOIN StudySets ON Flashcards.set_id = StudySets.set_id 
                   ORDER BY Flashcards.card_id;`;
     
-    // Query to get all study sets for the dropdown
     let query2 = "SELECT set_id, title FROM StudySets ORDER BY title;";
     
     db.pool.query(query1, function(error, rows, fields) {
@@ -277,9 +235,7 @@ app.get('/flashcards', function(req, res) {
                 res.sendStatus(500);
                 return;
             }
-            
-            let studysets = rows;
-            res.render('flashcards', {data: flashcards, studysets: studysets});
+            res.render('flashcards', {data: flashcards, studysets: rows});
         });
     });
 });
@@ -287,15 +243,9 @@ app.get('/flashcards', function(req, res) {
 // Add New Flashcard
 app.post('/add-flashcard', function(req, res) {
     let data = req.body;
-    
     let query1 = `INSERT INTO Flashcards (set_id, front_text, back_text, difficulty_level) 
                   VALUES (?, ?, ?, ?)`;
-    let values = [
-        data['set_id'],
-        data['front_text'],
-        data['back_text'],
-        data['difficulty_level']
-    ];
+    let values = [data['set_id'], data['front_text'], data['back_text'], data['difficulty_level']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -303,12 +253,11 @@ app.post('/add-flashcard', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.redirect('/flashcards');
     });
 });
 
-// Get Single Flashcard (for update form)
+// Get Single Flashcard
 app.get('/flashcards/:id', function(req, res) {
     let cardId = req.params.id;
     let query1 = "SELECT * FROM Flashcards WHERE card_id = ?";
@@ -319,7 +268,6 @@ app.get('/flashcards/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.json(rows[0]);
     });
 });
@@ -327,17 +275,10 @@ app.get('/flashcards/:id', function(req, res) {
 // Update Flashcard
 app.put('/update-flashcard', function(req, res) {
     let data = req.body;
-    
     let query1 = `UPDATE Flashcards 
                   SET set_id = ?, front_text = ?, back_text = ?, difficulty_level = ? 
                   WHERE card_id = ?`;
-    let values = [
-        data['set_id'],
-        data['front_text'],
-        data['back_text'],
-        data['difficulty_level'],
-        data['card_id']
-    ];
+    let values = [data['set_id'], data['front_text'], data['back_text'], data['difficulty_level'], data['card_id']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -345,7 +286,6 @@ app.put('/update-flashcard', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(200);
     });
 });
@@ -361,7 +301,6 @@ app.delete('/delete-flashcard/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(204);
     });
 });
@@ -370,14 +309,12 @@ app.delete('/delete-flashcard/:id', function(req, res) {
 
 // Browse Quizzes
 app.get('/quizzes', function(req, res) {
-    // Query to get all quizzes with user information
     let query1 = `SELECT Quizzes.quiz_id, Quizzes.score, Quizzes.attempt_date, 
                          Users.username as taker_name, Quizzes.user_id
                   FROM Quizzes 
                   JOIN Users ON Quizzes.user_id = Users.user_id 
                   ORDER BY Quizzes.quiz_id;`;
     
-    // Query to get all users for the dropdown
     let query2 = "SELECT user_id, username FROM Users ORDER BY username;";
     
     db.pool.query(query1, function(error, rows, fields) {
@@ -395,9 +332,7 @@ app.get('/quizzes', function(req, res) {
                 res.sendStatus(500);
                 return;
             }
-            
-            let users = rows;
-            res.render('quizzes', {data: quizzes, users: users});
+            res.render('quizzes', {data: quizzes, users: rows});
         });
     });
 });
@@ -405,14 +340,8 @@ app.get('/quizzes', function(req, res) {
 // Add New Quiz
 app.post('/add-quiz', function(req, res) {
     let data = req.body;
-    
-    let query1 = `INSERT INTO Quizzes (user_id, score, attempt_date) 
-                  VALUES (?, ?, ?)`;
-    let values = [
-        data['user_id'],
-        data['score'],
-        data['attempt_date']
-    ];
+    let query1 = `INSERT INTO Quizzes (user_id, score, attempt_date) VALUES (?, ?, ?)`;
+    let values = [data['user_id'], data['score'], data['attempt_date']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -420,12 +349,11 @@ app.post('/add-quiz', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.redirect('/quizzes');
     });
 });
 
-// Get Single Quiz (for update form)
+// Get Single Quiz
 app.get('/quizzes/:id', function(req, res) {
     let quizId = req.params.id;
     let query1 = "SELECT * FROM Quizzes WHERE quiz_id = ?";
@@ -436,7 +364,6 @@ app.get('/quizzes/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.json(rows[0]);
     });
 });
@@ -444,15 +371,8 @@ app.get('/quizzes/:id', function(req, res) {
 // Update Quiz
 app.put('/update-quiz', function(req, res) {
     let data = req.body;
-    
-    let query1 = `UPDATE Quizzes 
-                  SET user_id = ?, score = ? 
-                  WHERE quiz_id = ?`;
-    let values = [
-        data['user_id'],
-        data['score'],
-        data['quiz_id']
-    ];
+    let query1 = `UPDATE Quizzes SET user_id = ?, score = ? WHERE quiz_id = ?`;
+    let values = [data['user_id'], data['score'], data['quiz_id']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -460,7 +380,6 @@ app.put('/update-quiz', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(200);
     });
 });
@@ -476,28 +395,190 @@ app.delete('/delete-quiz/:id', function(req, res) {
             res.sendStatus(500);
             return;
         }
-        
         res.sendStatus(204);
     });
 });
 
-// ==================== RESET DATABASE ROUTES ====================
+// ==================== USER_STUDYSETS ROUTES (Junction Table) ====================
 
-app.get('/reset-database', async function (req, res) {
-    try {
-        console.log('Resetting database...');
-        await db.query('CALL sp_reset_database();');
-        console.log('Database reset successfully!');
+app.get('/user-studysets', function(req, res) {
+    let query1 = `SELECT uss.id, u.username, ss.title AS studyset_title, uss.shared_at
+                  FROM User_StudySets uss
+                  JOIN Users u ON uss.user_id = u.user_id
+                  JOIN StudySets ss ON uss.set_id = ss.set_id
+                  ORDER BY uss.shared_at DESC;`;
+    
+    let query2 = "SELECT user_id, username FROM Users ORDER BY username;";
+    let query3 = "SELECT set_id, title FROM StudySets ORDER BY title;";
+    
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        
+        let relationships = rows;
+        
+        db.pool.query(query2, function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+            }
+            
+            let users = rows;
+            
+            db.pool.query(query3, function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                    return;
+                }
+                
+                res.render('user-studysets', {
+                    relationships: relationships,
+                    users: users,
+                    studysets: rows
+                });
+            });
+        });
+    });
+});
+
+// ==================== USER_QUIZZES ROUTES (Junction Table) ====================
+
+app.get('/user-quizzes', function(req, res) {
+    let query1 = `SELECT uq.id, u.username, q.quiz_id AS quiz_title, uq.score, uq.taken_at
+                  FROM User_Quizzes uq
+                  JOIN Users u ON uq.user_id = u.user_id
+                  JOIN Quizzes q ON uq.quiz_id = q.quiz_id
+                  ORDER BY uq.taken_at DESC;`;
+    
+    let query2 = "SELECT user_id, username FROM Users ORDER BY username;";
+    let query3 = "SELECT quiz_id FROM Quizzes ORDER BY quiz_id;";
+    
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        
+        let attempts = rows;
+        
+        db.pool.query(query2, function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+            }
+            
+            let users = rows;
+            
+            db.pool.query(query3, function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                    return;
+                }
+                
+                res.render('user-quizzes', {
+                    attempts: attempts,
+                    users: users,
+                    quizzes: rows
+                });
+            });
+        });
+    });
+});
+
+// ==================== QUIZ_FLASHCARDS ROUTES (Junction Table) ====================
+
+app.get('/quiz-flashcards', function(req, res) {
+    let query1 = `SELECT qf.id, q.quiz_id AS quiz_title, f.front_text, ss.title AS studyset_title
+                  FROM Quiz_Flashcards qf
+                  JOIN Quizzes q ON qf.quiz_id = q.quiz_id
+                  JOIN Flashcards f ON qf.card_id = f.card_id
+                  JOIN StudySets ss ON f.set_id = ss.set_id
+                  ORDER BY q.quiz_id, f.card_id;`;
+    
+    let query2 = "SELECT quiz_id FROM Quizzes ORDER BY quiz_id;";
+    let query3 = `SELECT f.card_id, f.front_text, ss.title AS studyset_title
+                  FROM Flashcards f
+                  JOIN StudySets ss ON f.set_id = ss.set_id
+                  ORDER BY ss.title, f.card_id;`;
+    
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        
+        let assignments = rows;
+        
+        db.pool.query(query2, function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+            }
+            
+            let quizzes = rows;
+            
+            db.pool.query(query3, function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                    return;
+                }
+                
+                res.render('quiz-flashcards', {
+                    assignments: assignments,
+                    quizzes: quizzes,
+                    flashcards: rows
+                });
+            });
+        });
+    });
+});
+
+// ==================== STEP 4 ADMIN ROUTES ====================
+
+// RESET Database
+app.get('/reset-database', function(req, res) {
+    let query1 = "CALL sp_reset_database();";
+    
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log('Error resetting database:', error);
+            res.status(500).send('Error resetting database: ' + error.message);
+            return;
+        }
+        
         res.send(`
             <h1>✅ Database Reset Successfully!</h1>
             <p>All tables have been dropped and recreated with sample data.</p>
             <a href="/">Go to Home</a> | 
             <a href="/users">View Users</a>
         `);
-    } catch (error) {
-        console.error('Error resetting database:', error);
-        res.status(500).send('Error resetting database: ' + error.message);
-    }
+    });
+});
+
+// DELETE Test User (for demonstrating RESET works)
+app.get('/delete-test-user', function(req, res) {
+    let query1 = "CALL DeleteTestUser();";
+    
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log('Error deleting test user:', error);
+            res.status(500).send('Error deleting test user: ' + error.message);
+            return;
+        }
+        
+        res.redirect('/users');
+    });
 });
 
 /*
