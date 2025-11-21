@@ -78,17 +78,17 @@ BEGIN
   );
 
   -- User_Quizzes: associate Bob to Alice's quiz
-  INSERT INTO User_Quizzes (user_id, quiz_id, score, taken_at)
+  INSERT INTO User_Quizzes (user_id, quiz_id)
   VALUES (
     (SELECT user_id FROM Users  WHERE username='Bob' LIMIT 1),
     (SELECT quiz_id  FROM Quizzes q
        JOIN Users u ON u.user_id = q.user_id
      WHERE u.username='Alice'
-     ORDER BY q.quiz_id DESC LIMIT 1),
+     ORDER BY q.quiz_id DESC LIMIT 1)
     -- dummy score
-    85.0,          
+    -- 85.0,          
     -- taken_at timestamp
-    NOW()          
+    -- NOW()          
   );
 
   -- Quiz_Flashcards: attach two SQL cards to ResetDemo’s quiz
