@@ -548,7 +548,7 @@ app.get('/quiz-flashcards', function(req, res) {
 
 // RESET Database
 app.get('/reset-database', function(req, res) {
-    let query1 = "CALL sp_reset_database();";
+    let query1 = "CALL sp_reset_study_app();";
     
     db.pool.query(query1, function(error, rows, fields) {
         if (error) {
@@ -568,7 +568,7 @@ app.get('/reset-database', function(req, res) {
 
 // DELETE Test User (for demonstrating RESET works)
 app.get('/delete-test-user', function(req, res) {
-    let query1 = "CALL DeleteTestUser();";
+    let query1 = "CALL sp_demo_delete_user();";
     
     db.pool.query(query1, function(error, rows, fields) {
         if (error) {
