@@ -16,6 +16,16 @@
             <a href="/studysets">Study Sets</a>
             <a href="/flashcards">Flashcards</a>
             <a href="/quizzes">Quizzes</a>
+
+            <!-- Reset Button -->
+            <form action="/reset-database" method="get" 
+                  onsubmit="return confirm('Are you sure you want to reset the database to its sample data state? This cannot be undone.');"
+                  style="display:inline-block; margin-left: 1rem;">
+                <button type="submit" class="reset-button">
+                    Reset Database
+                </button>
+            </form>
+            
         </nav>
     </header>
 
