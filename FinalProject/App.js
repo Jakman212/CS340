@@ -597,6 +597,9 @@ const hbs = handlebars.create ({
     }
 })
 
+app.engine('.hbs', hbs.engine);
+app.set('view engine', '.hbs');
+
 /*
     LISTENER
 */
