@@ -587,6 +587,9 @@ app.get('/delete-test-user', function(req, res) {
 const handlebars = require('express-handlebars');
 
 const hbs = handlebars.create ({
+    extname: '.hbs',
+    defaultLayout: 'main',
+    layoutsDir: __dirname + '/views/',
     helpers: {
         formatDate: function(date) {
             if (!date) return '';
@@ -599,6 +602,7 @@ const hbs = handlebars.create ({
 
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
+app.set('views', './views');
 
 /*
     LISTENER
