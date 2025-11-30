@@ -10,6 +10,7 @@
     <header>
         <h1>Study Application</h1>
         <p class="subtitle">Group 69: Sasan Pourassef & Jeremy Dempsey</p>
+
         <nav>
             <a href="/">Home</a>
             <a href="/users">Users</a>
@@ -17,15 +18,10 @@
             <a href="/flashcards">Flashcards</a>
             <a href="/quizzes">Quizzes</a>
 
-            <!-- Reset Button -->
-            <form action="/reset-database" method="get" 
-                  onsubmit="return confirm('Are you sure you want to reset the database to its sample data state? This cannot be undone.');"
-                  style="display:inline-block; margin-left: 1rem;">
-                <button type="submit" class="reset-button">
-                    Reset Database
-                </button>
-            </form>
-            
+            <!-- Reset button styled exactly like other nav links -->
+            <a href="#" id="reset-link" onclick="return handleResetClick();">
+                Reset Database
+            </a>
         </nav>
     </header>
 
@@ -38,5 +34,20 @@
     </footer>
 
     <script src="/script.js"></script>
+
+    <!-- Reset confirmation & redirect -->
+    <script>
+        function handleResetClick() {
+            const ok = confirm(
+                "Are you sure you want to reset the database to its sample data state? This cannot be undone."
+            );
+            if (!ok) return false;
+
+            // Redirect to the reset route
+            window.location.href = "/reset-database";
+            return false;
+        }
+    </script>
+
 </body>
 </html>
