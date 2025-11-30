@@ -589,7 +589,7 @@ const handlebars = require('express-handlebars');
 const hbs = handlebars.create ({
     extname: '.hbs',
     defaultLayout: 'main',
-    layoutsDir: __dirname + '/views/',
+    layoutsDir: __dirname + '/views/layouts/',
     helpers: {
         formatDate: function(date) {
             if (!date) return '';
@@ -602,7 +602,7 @@ const hbs = handlebars.create ({
 
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
-app.set('views', './views');
+app.set('views', './views/layouts');
 
 /*
     LISTENER
