@@ -35,7 +35,7 @@
 
     <script src="/script.js"></script>
 
-    <!-- Reset confirmation & redirect -->
+    <!-- Reset confirmation & success popup -->
     <script>
         function handleResetClick() {
             const ok = confirm(
@@ -43,8 +43,28 @@
             );
             if (!ok) return false;
 
-            // Redirect to the reset route
-            window.location.href = "/reset-database";
+            // Store the current page URL to reload after reset
+            const currentPage = window.location.pathname;
+
+            // Call the reset endpoint
+            fetch('/reset-database', {
+                method: 'GET',
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Show success popup
+                    alert("✅ Database has been reset to sample data.");
+                    // Reload current page to reflect changes
+                    window.location.href = currentPage;
+                } else {
+                    alert("❌ Error resetting database. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error('Error during reset:', error);
+                alert("❌ Error resetting database. Please try again.");
+            });
+
             return false;
         }
     </script>
