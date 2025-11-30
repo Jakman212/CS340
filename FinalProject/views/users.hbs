@@ -21,7 +21,7 @@
                     <td>{{this.user_id}}</td>
                     <td>{{this.username}}</td>
                     <td>{{this.email}}</td>
-                    <td>{{this.join_date}}</td>
+                    <td>{{formatDate this.join_date}}</td>
                     <td>
                         <button class="btn btn-small btn-edit" onclick="showUpdateForm({{this.user_id}})">Edit</button>
                         <button class="btn btn-small btn-delete" onclick="deleteUser({{this.user_id}})">Delete</button>

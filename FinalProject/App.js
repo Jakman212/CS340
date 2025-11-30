@@ -581,6 +581,22 @@ app.get('/delete-test-user', function(req, res) {
     });
 });
 
+// ==================== Helper Functions ====================
+
+// helper function for Users.hbs to format date
+const handlebars = require('express-handlebars');
+
+const hbs = handlebars.create ({
+    helpers: {
+        formatDate: function(date) {
+            if (!date) return '';
+            // Format date as YYYY-MM-DD
+            const d = new Date(date);
+            return d.toISOString().split('T')[0];
+        }
+    }
+})
+
 /*
     LISTENER
 */
