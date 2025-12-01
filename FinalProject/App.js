@@ -38,7 +38,7 @@ app.get('/', function(req, res) {
 
 // Browse Users
 app.get('/users', function(req, res) {
-    let query1 = "SELECT user_id, username, email, join_date FROM Users ORDER BY user_id;";
+    let query1 = "SELECT user_id, username, email, DATE_FORMAT(join_date, '%Y-%m-%d') as join_date FROM Users;";
     
     db.pool.query(query1, function(error, rows, fields) {
         if (error) {
@@ -580,29 +580,6 @@ app.get('/delete-test-user', function(req, res) {
         res.redirect('/users');
     });
 });
-
-// ==================== Helper Functions ====================
-
-// helper function for Users.hbs to format date
-const handlebars = require('express-handlebars');
-
-const hbs = handlebars.create ({
-    extname: '.hbs',
-    defaultLayout: 'main',
-    layoutsDir: __dirname + '/views/layouts/',
-    helpers: {
-        formatDate: function(date) {
-            if (!date) return '';
-            // Format date as YYYY-MM-DD
-            const d = new Date(date);
-            return d.toISOString().split('T')[0];
-        }
-    }
-})
-
-app.engine('.hbs', hbs.engine);
-app.set('view engine', '.hbs');
-app.set('views', './views/layouts');
 
 /*
     LISTENER
