@@ -1,6 +1,16 @@
 -- ============================================================
--- DDL.sql — Study Application (CS340) — Group 69
--- Sasan Pourassef, Jeremy Dempsey
+-- DDL.sql — Study Application Database (CS340)
+-- Group 69 — Sasan Pourassef & Jeremy Dempsey
+-- Oregon State University
+--
+-- Description:
+--   This file defines the full database schema, stored procedures,
+--   and seed data for the Study Application project. It includes a
+--   reset procedure (sp_load_study_app) used to drop, recreate, and
+--   repopulate all tables for testing and demonstration purposes.
+--
+-- Use of AI:
+--   AI was used to generate the example data shown within this file
 -- ============================================================
 
 DROP PROCEDURE IF EXISTS sp_load_study_app;
@@ -197,5 +207,6 @@ DELIMITER ;
 
 -- Use the following statement to reset/load the Study App database:
 -- CALL sp_load_study_app();
+
 
 
