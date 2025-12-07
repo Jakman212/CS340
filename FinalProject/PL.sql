@@ -1,7 +1,27 @@
-/* ============================================================
-   Study App — PL.SQL File (CS340)
-   Sasan Pourassef & Jeremy Dempsey
-   ============================================================ */
+-- ============================================================
+-- PL.sql — Study Application Stored Procedures (CS340)
+-- Group 69 — Sasan Pourassef & Jeremy Dempsey
+-- Oregon State University
+--
+-- Description:
+--   This file contains all stored procedures (PL/SQL / MySQL)
+--   used by the Study Application project. At this stage, it
+--   includes:
+--     • sp_reset_study_app   → Full database reset + reseed
+--     • sp_demo_delete_user → Single CUD demo for RESET testing
+--
+-- Purpose:
+--   These procedures allow graders and reviewers to:
+--     1) Modify the database using a controlled CUD operation
+--     2) Restore the database to a known clean state
+--        using CALL sp_reset_study_app();
+--
+-- Use of AI Tools (if applicable):
+--   Portions of this stored procedure file were developed
+--   with the assistance of AI-based code generation tools
+--   and reviewed/edited by the authors in accordance with
+--   CS340 course policy.
+-- ============================================================
 
 DROP PROCEDURE IF EXISTS sp_reset_study_app;
 DROP PROCEDURE IF EXISTS sp_demo_delete_user;
