@@ -73,3 +73,40 @@ function formatDate(dateString) {
         day: 'numeric'
     });
 }
+
+// Handle DELETE button clicks
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteForms = document.querySelectorAll('.delete-form');
+    
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop the form from submitting normally
+            
+            const confirmDelete = confirm('Are you sure you want to delete this item?');
+            if (!confirmDelete) return;
+            
+            // Get form action URL
+            const url = form.action;
+            
+            // Send DELETE request
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok || response.status === 204) {
+                    alert('✅ Item deleted successfully!');
+                    window.location.reload(); // Reload the page
+                } else {
+                    alert('❌ Error deleting item. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ Error deleting item. Please try again.');
+            });
+        });
+    });
+});

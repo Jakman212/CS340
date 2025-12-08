@@ -82,12 +82,12 @@
         {{/each}}
     </select>
 
-    <label for="flashcard_id">Select Flashcard:</label>
-    <select name="flashcard_id" id="flashcard_id" required>
+    <label for="card_id">Select Flashcard:</label>
+    <select name="card_id" id="card_id" required>
         <option value="" disabled selected>Choose a flashcard...</option>
         {{#each flashcards}}
         <option value="{{this.card_id}}">
-            {{this.question}} (from {{this.studyset_title}})
+            {{this.front_text}} (from {{this.studyset_title}})
         </option>
         {{/each}}
     </select>
