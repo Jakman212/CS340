@@ -1,14 +1,22 @@
-/* public/style.css */
-/* 
-    This style sheet was produced using AI
-    Prompt used:
-    "Hey, can you help me by generating a css style sheet for
-    our study application project" along with uploading our
-    pdf for context.
-    The parameters were edited by the project developers:
-        Sasan Pourassef & Jeremy Dempsey
-*/
-/* Study Application Styles */
+/* ============================================================
+   style.css — Study Application Stylesheet (CS340)
+   Group 69 — Sasan Pourassef & Jeremy Dempsey
+   Oregon State University
+--
+-- Description:
+--   This stylesheet controls the visual layout, spacing, color
+--   scheme, and responsive behavior of the Study Application
+--   web interface. It defines styles for navigation, forms,
+--   tables, buttons, alerts, and page layout components.
+--
+-- Usage:
+--   This file is linked globally across all UI pages to ensure
+--   consistent styling throughout the application.
+--
+-- Use of AI Tools:
+--   This style sheet was produced using AI and then reviewed
+--   and edited by the authors, in accordance with CS340 course policy.
+-- ============================================================ */
 
 * {
     margin: 0;
