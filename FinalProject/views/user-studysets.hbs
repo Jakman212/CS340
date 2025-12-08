@@ -44,7 +44,7 @@
             <th>ID</th>
             <th>User</th>
             <th>Study Set</th>
-            <th>Shared Date</th>
+            <th>Role</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -54,10 +54,10 @@
             <td>{{this.user_id}}-{{this.set_id}}</td>
             <td>{{this.username}}</td>
             <td>{{this.studyset_title}}</td>
-            <td>{{this.shared}}</td>
+            <td>{{this.role}}</td>
             <td>
                 {{! DELETE form - will be functional in next step }}
-                <form class="delete-form" method="POST" action="/delete-user-studyset/{{this.user_id}}/{{this.set_id}}">
+                <form class="delete-form" method="POST" action="/user-studysets/delete/{{this.user_id}}/{{this.set_id}}">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn-delete">Remove Access</button>
                 </form>
@@ -89,7 +89,7 @@
         <option value="{{this.set_id}}">{{this.title}}</option>
         {{/each}}
     </select>
-    
+
     <label for="role">Role:</label>
     <select name="role" id="role" required>
         <option value="viewer">Viewer</option>

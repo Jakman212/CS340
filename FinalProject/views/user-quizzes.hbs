@@ -56,7 +56,7 @@
         <tr>
             <td>{{this.user_id}}-{{this.quiz_id}}</td>
             <td>{{this.username}}</td>
-            <td>{{this.quiz_title}}</td>
+            <td>{{this.quiz_id}}</td>
             <td>
                 {{#if this.score}}
                     {{this.score}}%
@@ -67,7 +67,7 @@
             <td>{{this.attempt_date}}</td>
             <td>
                 {{! DELETE form - will be functional in next step }}
-                <form class="delete-form" method="POST" action="/delete-user-quiz/{{this.user_id}}/{{this.quiz_id}}">
+                <form class="delete-form" method="POST" action="/user-quizzes/delete/{{this.user_id}}/{{this.quiz_id}}">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn-delete">Delete Attempt</button>
                 </form>
