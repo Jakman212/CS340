@@ -51,13 +51,13 @@
     <tbody>
         {{#each assignments}}
         <tr>
-            <td>{{this.id}}</td>
+            <td>{{this.quiz_id}}-{{this.card_id}}</td>
             <td>{{this.quiz_title}}</td>
-            <td>{{this.question}}</td>
+            <td>{{this.front_text}}</td>
             <td>{{this.studyset_title}}</td>
             <td>
                 {{! DELETE form - will be functional in next step }}
-                <form class="delete-form" method="POST" action="/quiz-flashcards/delete/{{this.id}}">
+                <form class="delete-form" method="POST" action="/quiz-flashcards/delete/{{this.quiz_id}}-{{this.card_id}}">
                     <button type="submit" class="btn-delete">Remove from Quiz</button>
                 </form>
             </td>
