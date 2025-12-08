@@ -86,7 +86,7 @@
     <select name="flashcard_id" id="flashcard_id" required>
         <option value="" disabled selected>Choose a flashcard...</option>
         {{#each flashcards}}
-        <option value="{{this.flashcard_id}}">
+        <option value="{{this.card_id}}">
             {{this.question}} (from {{this.studyset_title}})
         </option>
         {{/each}}

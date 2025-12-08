@@ -491,7 +491,7 @@ app.get('/user-quizzes', function(req, res) {
                   ORDER BY q.attempt_date DESC;`;
     
     let query2 = "SELECT user_id, username FROM Users ORDER BY username;";
-    let query3 = "SELECT quiz_id, score, attempt_date FROM Quizzes ORDER BY quiz_id;";
+    let query3 = "SELECT quiz_id, user_id, score, attempt_date FROM Quizzes ORDER BY quiz_id;";
     
     db.pool.query(query1, function(error, rows, fields) {
         if (error) {
@@ -638,7 +638,7 @@ app.post('/add-user-studyset', function(req, res) {
 });
 
 // UPDATE M:N - Change role (REQUIRED!)
-app.put('/update-user-studyset', function(req, res) {
+app.post('/update-user-studyset', function(req, res) {
     let data = req.body;
     let query1 = `UPDATE User_StudySets SET role = ? WHERE user_id = ? AND set_id = ?`;
     let values = [data['role'], data['user_id'], data['set_id']];
@@ -654,7 +654,7 @@ app.put('/update-user-studyset', function(req, res) {
 });
 
 // DELETE M:N (REQUIRED!)
-app.delete('/delete-user-studyset/:user_id/:set_id', function(req, res) {
+app.post('/delete-user-studyset/:user_id/:set_id', function(req, res) {
     let userId = req.params.user_id;
     let setId = req.params.set_id;
     let query1 = `DELETE FROM User_StudySets WHERE user_id = ? AND set_id = ?`;
@@ -688,7 +688,7 @@ app.post('/add-user-quiz', function(req, res) {
 });
 
 // DELETE M:N
-app.delete('/delete-user-quiz/:user_id/:quiz_id', function(req, res) {
+app.post('/delete-user-quiz/:user_id/:quiz_id', function(req, res) {
     let userId = req.params.user_id;
     let quizId = req.params.quiz_id;
     let query1 = `DELETE FROM User_Quizzes WHERE user_id = ? AND quiz_id = ?`;
@@ -735,7 +735,7 @@ app.post('/add-quiz-flashcard', function(req, res) {
 });
 
 // UPDATE M:N - Change question order (REQUIRED!)
-app.put('/update-quiz-flashcard', function(req, res) {
+app.post('/update-quiz-flashcard', function(req, res) {
     let data = req.body;
     let query1 = `UPDATE Quiz_Flashcards SET question_order = ? WHERE quiz_id = ? AND card_id = ?`;
     let values = [data['question_order'], data['quiz_id'], data['card_id']];
@@ -751,7 +751,7 @@ app.put('/update-quiz-flashcard', function(req, res) {
 });
 
 // DELETE M:N
-app.delete('/delete-quiz-flashcard/:quiz_id/:card_id', function(req, res) {
+app.post('/delete-quiz-flashcard/:quiz_id/:card_id', function(req, res) {
     let quizId = req.params.quiz_id;
     let cardId = req.params.card_id;
     let query1 = `DELETE FROM Quiz_Flashcards WHERE quiz_id = ? AND card_id = ?`;
