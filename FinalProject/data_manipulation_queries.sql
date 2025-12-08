@@ -1,6 +1,18 @@
 /* ============================================================
-   Study App — Data Manipulation Queries (CS340)
-   ============================================================ */
+   data_manipulation_queries.sql — Study Application Queries (CS340)
+   Group 69 — Sasan Pourassef & Jeremy Dempsey
+   Oregon State University
+--
+-- Description:
+--   This file contains all handwritten SQL data manipulation
+--   queries (CREATE, READ, UPDATE, DELETE) used by the Study
+--   Application backend. These queries support full CRUD
+--   functionality for all main entities and junction tables.
+--
+-- Usage:
+--   These queries are executed directly by the Node.js backend
+--   using prepared statements. No ORM or query generator is used.
+-- ============================================================ */
 
 
 -- USERS ======================================================
@@ -214,4 +226,5 @@ WHERE quiz_id = @quiz_idInput
 DELETE FROM Quiz_Flashcards
 WHERE quiz_id = @quiz_idInput
   AND card_id = @card_idInput;
+
 
