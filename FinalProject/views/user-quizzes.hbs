@@ -67,7 +67,7 @@
             <td>{{this.attempt_date}}</td>
             <td>
                 {{! DELETE form - will be functional in next step }}
-                <form class="delete-form" method="POST" action="/user-quizzes/delete/{{this.user_id}}/{{this.quiz_id}}">
+                <form class="delete-form" method="POST" action="/delete-user-quiz/{{this.user_id}}/{{this.quiz_id}}">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn-delete">Delete Attempt</button>
                 </form>
@@ -96,8 +96,39 @@
     <select name="quiz_id" id="quiz_id" required>
         <option value="" disabled selected>Choose a quiz...</option>
         {{#each quizzes}}
-        <option value="{{this.quiz_id}}">Quiz #{{this.quiz_id}} (Score: {{this.score}}%)</option>
+        <option value="{{this.quiz_id}}">Quiz #{{this.quiz_id}}</option>
         {{/each}}
     </select>
+
     <button type="submit" class="btn-submit">Record Quiz Attempt</button>
 </form>
+
+<h2>Update Question Order (UPDATE M:N) ⭐</h2>
+
+<form class="cuForm" id="update-order-form" method="POST" action="/update-quiz-flashcard">
+    <label for="update_quiz_id">Select Quiz-Flashcard:</label>
+    <select name="quiz_id" id="update_quiz_id" required onchange="updateCardId()">
+        <option value="" disabled selected>Choose a quiz-flashcard...</option>
+        {{#each assignments}}
+        <option value="{{this.quiz_id}}" data-card-id="{{this.card_id}}" data-order="{{this.question_order}}">
+            Quiz #{{this.quiz_id}} - {{this.front_text}} (Current Order: {{this.question_order}})
+        </option>
+        {{/each}}
+    </select>
+
+    <input type="hidden" name="card_id" id="update_card_id" />
+
+    <label for="update_question_order">New Question Order:</label>
+    <input type="number" name="question_order" id="update_question_order" min="1" required placeholder="Enter new order number" />
+
+    <button type="submit" class="btn-update">Update Order</button>
+</form>
+
+<script>
+function updateCardId() {
+    const select = document.getElementById('update_quiz_id');
+    const selectedOption = select.options[select.selectedIndex];
+    const cardId = selectedOption.getAttribute('data-card-id');
+    document.getElementById('update_card_id').value = cardId;
+}
+</script>

@@ -532,14 +532,14 @@ app.get('/user-quizzes', function(req, res) {
 
 app.get('/quiz-flashcards', function(req, res) {
     let query1 = `SELECT qf.quiz_id, qf.card_id, qf.question_order,
-                         q.quiz_id AS quiz_id_display,
-                         f.front_text,
-                         ss.title AS studyset_title
-                  FROM Quiz_Flashcards qf
-                  JOIN Quizzes q ON qf.quiz_id = q.quiz_id
-                  JOIN Flashcards f ON qf.card_id = f.card_id
-                  JOIN StudySets ss ON f.set_id = ss.set_id
-                  ORDER BY qf.quiz_id, qf.question_order;`;
+                     q.quiz_id AS quiz_id_display,
+                     f.front_text,
+                     ss.title AS studyset_title
+              FROM Quiz_Flashcards qf
+              JOIN Quizzes q ON qf.quiz_id = q.quiz_id
+              JOIN Flashcards f ON qf.card_id = f.card_id
+              JOIN StudySets ss ON f.set_id = ss.set_id
+              ORDER BY qf.quiz_id, qf.question_order;`;
     
     let query2 = "SELECT quiz_id FROM Quizzes ORDER BY quiz_id;";
     let query3 = `SELECT f.card_id, f.front_text, ss.title AS studyset_title
@@ -654,7 +654,7 @@ app.post('/update-user-studyset', function(req, res) {
 });
 
 // DELETE M:N (REQUIRED!)
-app.post('/delete-user-studyset/:user_id/:set_id', function(req, res) {
+app.post('/user-studysets/delete/:user_id/:set_id', function(req, res) {
     let userId = req.params.user_id;
     let setId = req.params.set_id;
     let query1 = `DELETE FROM User_StudySets WHERE user_id = ? AND set_id = ?`;
@@ -688,7 +688,7 @@ app.post('/add-user-quiz', function(req, res) {
 });
 
 // DELETE M:N
-app.post('/delete-user-quiz/:user_id/:quiz_id', function(req, res) {
+app.post('/user-quizzes/delete/:user_id/:quiz_id', function(req, res) {
     let userId = req.params.user_id;
     let quizId = req.params.quiz_id;
     let query1 = `DELETE FROM User_Quizzes WHERE user_id = ? AND quiz_id = ?`;
@@ -751,7 +751,7 @@ app.post('/update-quiz-flashcard', function(req, res) {
 });
 
 // DELETE M:N
-app.post('/delete-quiz-flashcard/:quiz_id/:card_id', function(req, res) {
+app.post('/quiz-flashcards/delete/:quiz_id/:card_id', function(req, res) {
     let quizId = req.params.quiz_id;
     let cardId = req.params.card_id;
     let query1 = `DELETE FROM Quiz_Flashcards WHERE quiz_id = ? AND card_id = ?`;

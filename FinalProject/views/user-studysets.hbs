@@ -57,7 +57,7 @@
             <td>{{this.shared}}</td>
             <td>
                 {{! DELETE form - will be functional in next step }}
-                <form class="delete-form" method="POST" action="/user-studysets/delete/{{this.user_id}}/{{this.set_id}}">
+                <form class="delete-form" method="POST" action="/delete-user-studyset/{{this.user_id}}/{{this.set_id}}">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn-delete">Remove Access</button>
                 </form>
@@ -82,12 +82,18 @@
         {{/each}}
     </select>
 
-    <label for="studyset_id">Select Study Set:</label>
-    <select name="studyset_id" id="studyset_id" required>
+    <label for="set_id">Select Study Set:</label>
+    <select name="set_id" id="set_id" required>
         <option value="" disabled selected>Choose a study set...</option>
         {{#each studysets}}
-        <option value="{{this.studyset_id}}">{{this.title}}</option>
+        <option value="{{this.set_id}}">{{this.title}}</option>
         {{/each}}
+    </select>
+    
+    <label for="role">Role:</label>
+    <select name="role" id="role" required>
+        <option value="viewer">Viewer</option>
+        <option value="editor">Editor</option>
     </select>
 
     <button type="submit" class="btn-submit">Share Study Set</button>
@@ -98,3 +104,36 @@
 <p class="info-note">
     To modify access, remove the existing relationship and create a new one if needed.
 </p>
+<h2>Update User Role (UPDATE M:N) ⭐</h2>
+
+
+<form class="cuForm" id="update-role-form" method="POST" action="/update-user-studyset">
+    <label for="update_user_id">Select User-Set Relationship:</label>
+    <select name="user_id" id="update_user_id" required onchange="updateSetId()">
+        <option value="" disabled selected>Choose a relationship...</option>
+        {{#each relationships}}
+        <option value="{{this.user_id}}" data-set-id="{{this.set_id}}" data-role="{{this.role}}">
+            {{this.username}} → {{this.studyset_title}} (Current: {{this.role}})
+        </option>
+        {{/each}}
+    </select>
+
+    <input type="hidden" name="set_id" id="update_set_id" />
+
+    <label for="update_role">New Role:</label>
+    <select name="role" id="update_role" required>
+        <option value="viewer">Viewer</option>
+        <option value="editor">Editor</option>
+    </select>
+
+    <button type="submit" class="btn-update">Update Role</button>
+</form>
+
+<script>
+function updateSetId() {
+    const select = document.getElementById('update_user_id');
+    const selectedOption = select.options[select.selectedIndex];
+    const setId = selectedOption.getAttribute('data-set-id');
+    document.getElementById('update_set_id').value = setId;
+}
+</script>
