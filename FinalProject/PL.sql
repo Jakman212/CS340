@@ -25,6 +25,9 @@
 
 DROP PROCEDURE IF EXISTS sp_reset_study_app;
 DROP PROCEDURE IF EXISTS sp_demo_delete_user;
+DROP PROCEDURE IF EXISTS sp_create_user;
+DROP PROCEDURE IF EXISTS sp_update_user;
+DROP PROCEDURE IF EXISTS sp_delete_user;
 
 /* -------------------------------------------------------------
     Hard reset DB to a minimal, deterministic seed so
@@ -104,11 +107,7 @@ BEGIN
     (SELECT quiz_id  FROM Quizzes q
        JOIN Users u ON u.user_id = q.user_id
      WHERE u.username='Alice'
-     ORDER BY q.quiz_id DESC LIMIT 1)
-    -- dummy score
-    -- 85.0,          
-    -- taken_at timestamp
-    -- NOW()          
+     ORDER BY q.quiz_id DESC LIMIT 1)     
   );
 
   -- Quiz_Flashcards: attach two SQL cards to ResetDemo’s quiz
@@ -140,5 +139,64 @@ DELIMITER //
 CREATE PROCEDURE sp_demo_delete_user()
 BEGIN
   DELETE FROM Users WHERE username = 'ResetDemo';
+END //
+DELIMITER ;
+
+-- ============================================================
+-- Added additional stored procedures to meet Step 6 requirements
+-- ============================================================
+
+-- ============================================================
+-- sp_create_user: Insert a new user into Users table
+-- Used by: POST /users/create route in app.js
+-- Sources: Our original work
+-- ============================================================
+DELIMITER //
+CREATE PROCEDURE sp_create_user(
+  IN p_username VARCHAR(50),
+  IN p_email VARCHAR(100),
+  IN p_password_hash VARCHAR(255),
+  IN p_join_date DATE
+)
+BEGIN
+  INSERT INTO Users (username, email, password_hash, join_date)
+  VALUES (p_username, p_email, p_password_hash, p_join_date);
+  
+  SELECT LAST_INSERT_ID() AS user_id;
+END //
+DELIMITER ;
+
+-- ============================================================
+-- sp_update_user: Update an existing user in Users table
+-- Used by: POST /users/update route in app.js
+-- Sources: Our original work
+-- ============================================================
+DELIMITER //
+CREATE PROCEDURE sp_update_user(
+  IN p_user_id INT,
+  IN p_username VARCHAR(50),
+  IN p_email VARCHAR(100),
+  IN p_password_hash VARCHAR(255)
+)
+BEGIN
+  UPDATE Users
+  SET username = p_username,
+      email = p_email,
+      password_hash = p_password_hash
+  WHERE user_id = p_user_id;
+END //
+DELIMITER ;
+
+-- ============================================================
+-- sp_delete_user: Delete a user from Users table
+-- Used by: POST /users/delete route in app.js
+-- Sources: Our original work
+-- ============================================================
+DELIMITER //
+CREATE PROCEDURE sp_delete_user(
+  IN p_user_id INT
+)
+BEGIN
+  DELETE FROM Users WHERE user_id = p_user_id;
 END //
 DELIMITER ;

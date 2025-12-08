@@ -79,10 +79,10 @@ app.get('/users', function(req, res) {
 });
 
 // Add New User
+// Calls stored procedure from PL.sql to handle user creation
 app.post('/add-user', function(req, res) {
     let data = req.body;
-    let query1 = `INSERT INTO Users (username, email, password_hash, join_date) 
-                  VALUES (?, ?, ?, ?)`;
+    let query1 = `CALL sp_create_user(?, ?, ?, ?)`;
     let values = [data['username'], data['email'], data['password_hash'], data['join_date']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
@@ -110,11 +110,12 @@ app.get('/users/:id', function(req, res) {
     });
 });
 
-// Update User
+// Update 
+// Calls stored procedure from PL.sql to handle user updates
 app.put('/update-user', function(req, res) {
     let data = req.body;
-    let query1 = `UPDATE Users SET username = ?, email = ?, password_hash = ? WHERE user_id = ?`;
-    let values = [data['username'], data['email'], data['password_hash'], data['user_id']];
+    let query1 = `CALL sp_update_user(?, ?, ?, ?)`;
+    let values = [data['user_id'], data['username'], data['email'], data['password_hash']];
     
     db.pool.query(query1, values, function(error, rows, fields) {
         if (error) {
@@ -127,9 +128,10 @@ app.put('/update-user', function(req, res) {
 });
 
 // Delete User
+// Calls stored procedure from PL.sql to handle cascading deletions
 app.delete('/delete-user/:id', function(req, res) {
     let userId = req.params.id;
-    let query1 = `DELETE FROM Users WHERE user_id = ?`;
+    let query1 = `CALL sp_delete_user(?)`;
     
     db.pool.query(query1, [userId], function(error, rows, fields) {
         if (error) {
