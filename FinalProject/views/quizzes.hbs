@@ -1,3 +1,32 @@
+{{!--
+  ============================================================
+  quizzes.hbs — Quizzes Entity Page (CS340)
+  Group 69 — Sasan Pourassef & Jeremy Dempsey
+  Oregon State University
+
+  Description:
+    This file displays and manages the Quizzes entity with
+    full CRUD operations:
+      • READ: Display all quizzes with owner and question count
+      • CREATE: Form to add new quizzes
+      • UPDATE: Form to modify quiz details and scores
+      • DELETE: Button to remove quizzes
+
+  Purpose:
+    Allows users to:
+      1) Browse all quizzes with ownership information
+      2) Create new quizzes with title and initial score
+      3) Update quiz metadata and scores via dropdown
+      4) Delete quizzes (with cascade to quiz-flashcard links)
+      5) View question counts per quiz via JOIN
+    
+    Sources:
+        • This file was created based on standard Handlebars
+          layout practices and customized for the Study Application.
+
+  ============================================================
+--}}
+
 <div class="page-container">
     <h2>Quizzes Management</h2>
     <p class="page-description">Manage quiz attempts and track student performance.</p>

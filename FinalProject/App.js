@@ -1,7 +1,35 @@
-// app.js
-// Main Express application for Study Application
-// Citation: Based on CS340 starter code and Node.js example
-// Modified for Study Application database project
+/*
+ * ============================================================
+ * app.js — Study Application Main Server (CS340)
+ * Group 69 — Sasan Pourassef & Jeremy Dempsey
+ * Oregon State University
+ *
+ * Description:
+ *   This file contains the main Express.js server application
+ *   for the Study Application project. It handles:
+ *     • Database connection and configuration
+ *     • Route definitions for all CRUD operations
+ *     • Handlebars view engine setup
+ *     • Server initialization and middleware
+ *
+ * Purpose:
+ *   This server provides a web interface for managing:
+ *     1) Users and their authentication
+ *     2) Study sets and flashcards
+ *     3) Quizzes and quiz results
+ *     4) M:M relationships (User_StudySets, User_Quizzes, Quiz_Flashcards)
+ *     5) Database reset functionality via stored procedures
+ *
+ * Routes:
+ *   - GET/POST /users, /studysets, /flashcards, /quizzes
+ *   - GET/POST /user-studysets, /user-quizzes, /quiz-flashcards
+ *   - POST /reset (calls sp_reset_study_app)
+ * 
+ * Sources:
+ *  - Based on CS340 starter code and Node.js example
+ *  - Modified for Study Application Database project 
+ * ============================================================
+ */
 
 // Express
 var express = require('express');

@@ -1,3 +1,32 @@
+{{!--
+  ============================================================
+  studysets.hbs — Study Sets Entity Page (CS340)
+  Group 69 — Sasan Pourassef & Jeremy Dempsey
+  Oregon State University
+
+  Description:
+    This file displays and manages the StudySets entity with
+    full CRUD operations:
+      • READ: Display all study sets with owner and card count
+      • CREATE: Form to add new study sets
+      • UPDATE: Form to modify study set details
+      • DELETE: Button to remove study sets
+
+  Purpose:
+    Allows users to:
+      1) Browse all study sets with ownership information
+      2) Create new study sets with subject and description
+      3) Update study set metadata via dropdown selection
+      4) Delete study sets (with cascade to flashcards)
+      5) View flashcard counts per study set via JOIN
+   
+    Sources:
+        • This file was created based on standard Handlebars
+          layout practices and customized for the Study Application.
+
+  ============================================================
+--}}
+
 <div class="page-container">
     <h2>Study Sets Management</h2>
     <p class="page-description">Manage collections of flashcards grouped by topic or course.</p>

@@ -1,3 +1,35 @@
+{{!--
+  ============================================================
+  user_quizzes.hbs — User-Quizzes M:M Page (CS340)
+  Group 69 — Sasan Pourassef & Jeremy Dempsey
+  Oregon State University
+
+  Description:
+    This file displays and manages the User_Quizzes junction
+    table with CRUD operations:
+      • READ: Display user-quiz relationships
+      • CREATE: Form to assign users to quizzes
+      • DELETE: Button to remove user-quiz associations
+
+  Purpose:
+    Manages many-to-many relationships between Users and
+    Quizzes:
+      1) Browse all user-quiz associations with usernames
+      2) Assign users to quizzes they can take
+      3) Remove user access to quizzes
+      4) Dynamic dropdowns for user and quiz selection
+
+  Note:
+    Score and taken_at data are stored in the Quizzes table
+    itself, not in this junction table (user_id, quiz_id only).
+    
+    Sources:
+        • This file was created based on standard Handlebars
+          layout practices and customized for the Study Application.
+
+  ============================================================
+--}}
+
 <h1>User Quiz Attempts</h1>
 
 <p class="page-description">

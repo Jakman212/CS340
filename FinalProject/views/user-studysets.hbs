@@ -1,3 +1,33 @@
+{{!--
+  ============================================================
+  user_studysets.hbs — User-StudySets M:M Page (CS340)
+  Group 69 — Sasan Pourassef & Jeremy Dempsey
+  Oregon State University
+
+  Description:
+    This file displays and manages the User_StudySets junction
+    table with full CRUD operations:
+      • READ: Display user-studyset relationships with roles
+      • CREATE: Form to assign users to study sets
+      • UPDATE: Form to modify user roles within study sets
+      • DELETE: Button to remove user-studyset associations
+
+  Purpose:
+    Manages many-to-many relationships between Users and
+    StudySets:
+      1) Browse all user-studyset associations with usernames
+      2) Assign users to study sets with roles (Owner/Viewer)
+      3) Update user roles within study sets
+      4) Remove user access to study sets
+      5) Dynamic dropdowns for user and studyset selection
+    
+    Sources:
+        • This file was created based on standard Handlebars
+          layout practices and customized for the Study Application.
+
+  ============================================================
+--}}
+
 <h1>User Study Sets - Shared Access</h1>
 
 <p class="page-description">

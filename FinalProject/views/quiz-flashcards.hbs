@@ -1,3 +1,33 @@
+{{!--
+  ============================================================
+  quiz_flashcards.hbs — Quiz-Flashcards M:M Page (CS340)
+  Group 69 — Sasan Pourassef & Jeremy Dempsey
+  Oregon State University
+
+  Description:
+    This file displays and manages the Quiz_Flashcards junction
+    table with full CRUD operations:
+      • READ: Display quiz-flashcard relationships
+      • CREATE: Form to add flashcards to quizzes
+      • UPDATE: Form to modify question order
+      • DELETE: Button to remove flashcards from quizzes
+
+  Purpose:
+    Manages many-to-many relationships between Quizzes and
+    Flashcards:
+      1) Browse all quiz-flashcard associations
+      2) Add flashcards to quizzes with question order
+      3) Update the order of questions within quizzes
+      4) Remove flashcards from quizzes
+      5) Dynamic dropdowns for quiz and flashcard selection
+    
+    Sources:
+        • This file was created based on standard Handlebars
+          layout practices and customized for the Study Application.
+
+  ============================================================
+--}}
+
 <h1>Quiz Flashcard Assignments</h1>
 
 <p class="page-description">
