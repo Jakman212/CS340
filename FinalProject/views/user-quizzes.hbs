@@ -102,33 +102,3 @@
 
     <button type="submit" class="btn-submit">Record Quiz Attempt</button>
 </form>
-
-<h2>Update Question Order (UPDATE M:N) ⭐</h2>
-
-<form class="cuForm" id="update-order-form" method="POST" action="/update-quiz-flashcard">
-    <label for="update_quiz_id">Select Quiz-Flashcard:</label>
-    <select name="quiz_id" id="update_quiz_id" required onchange="updateCardId()">
-        <option value="" disabled selected>Choose a quiz-flashcard...</option>
-        {{#each assignments}}
-        <option value="{{this.quiz_id}}" data-card-id="{{this.card_id}}" data-order="{{this.question_order}}">
-            Quiz #{{this.quiz_id}} - {{this.front_text}} (Current Order: {{this.question_order}})
-        </option>
-        {{/each}}
-    </select>
-
-    <input type="hidden" name="card_id" id="update_card_id" />
-
-    <label for="update_question_order">New Question Order:</label>
-    <input type="number" name="question_order" id="update_question_order" min="1" required placeholder="Enter new order number" />
-
-    <button type="submit" class="btn-update">Update Order</button>
-</form>
-
-<script>
-function updateCardId() {
-    const select = document.getElementById('update_quiz_id');
-    const selectedOption = select.options[select.selectedIndex];
-    const cardId = selectedOption.getAttribute('data-card-id');
-    document.getElementById('update_card_id').value = cardId;
-}
-</script>
