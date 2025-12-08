@@ -432,11 +432,13 @@ app.delete('/delete-quiz/:id', function(req, res) {
 // ==================== USER_STUDYSETS ROUTES (Junction Table) ====================
 
 app.get('/user-studysets', function(req, res) {
-    let query1 = `SELECT uss.id, u.username, ss.title AS studyset_title, uss.shared_at
+    let query1 = `SELECT uss.user_id, uss.set_id, uss.role,
+                         u.username, 
+                         ss.title AS studyset_title
                   FROM User_StudySets uss
                   JOIN Users u ON uss.user_id = u.user_id
                   JOIN StudySets ss ON uss.set_id = ss.set_id
-                  ORDER BY uss.shared_at DESC;`;
+                  ORDER BY u.username, ss.title;`;
     
     let query2 = "SELECT user_id, username FROM Users ORDER BY username;";
     let query3 = "SELECT set_id, title FROM StudySets ORDER BY title;";
@@ -479,14 +481,17 @@ app.get('/user-studysets', function(req, res) {
 // ==================== USER_QUIZZES ROUTES (Junction Table) ====================
 
 app.get('/user-quizzes', function(req, res) {
-    let query1 = `SELECT uq.id, u.username, q.quiz_id AS quiz_title, uq.score, uq.taken_at
+    let query1 = `SELECT uq.user_id, uq.quiz_id,
+                         u.username,
+                         q.score,
+                         q.attempt_date
                   FROM User_Quizzes uq
                   JOIN Users u ON uq.user_id = u.user_id
                   JOIN Quizzes q ON uq.quiz_id = q.quiz_id
-                  ORDER BY uq.taken_at DESC;`;
+                  ORDER BY q.attempt_date DESC;`;
     
     let query2 = "SELECT user_id, username FROM Users ORDER BY username;";
-    let query3 = "SELECT quiz_id FROM Quizzes ORDER BY quiz_id;";
+    let query3 = "SELECT quiz_id, score, attempt_date FROM Quizzes ORDER BY quiz_id;";
     
     db.pool.query(query1, function(error, rows, fields) {
         if (error) {
@@ -526,12 +531,15 @@ app.get('/user-quizzes', function(req, res) {
 // ==================== QUIZ_FLASHCARDS ROUTES (Junction Table) ====================
 
 app.get('/quiz-flashcards', function(req, res) {
-    let query1 = `SELECT qf.id, q.quiz_id AS quiz_title, f.front_text, ss.title AS studyset_title
+    let query1 = `SELECT qf.quiz_id, qf.card_id, qf.question_order,
+                         q.quiz_id AS quiz_id_display,
+                         f.front_text,
+                         ss.title AS studyset_title
                   FROM Quiz_Flashcards qf
                   JOIN Quizzes q ON qf.quiz_id = q.quiz_id
                   JOIN Flashcards f ON qf.card_id = f.card_id
                   JOIN StudySets ss ON f.set_id = ss.set_id
-                  ORDER BY q.quiz_id, f.card_id;`;
+                  ORDER BY qf.quiz_id, qf.question_order;`;
     
     let query2 = "SELECT quiz_id FROM Quizzes ORDER BY quiz_id;";
     let query3 = `SELECT f.card_id, f.front_text, ss.title AS studyset_title
