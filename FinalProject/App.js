@@ -619,6 +619,153 @@ app.get('/delete-test-user', function(req, res) {
     });
 });
 
+// ==================== USER_STUDYSETS CUD ====================
+
+// CREATE
+app.post('/add-user-studyset', function(req, res) {
+    let data = req.body;
+    let query1 = `INSERT INTO User_StudySets (user_id, set_id, role) VALUES (?, ?, ?)`;
+    let values = [data['user_id'], data['set_id'], data['role'] || 'viewer'];
+    
+    db.pool.query(query1, values, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        res.redirect('/user-studysets');
+    });
+});
+
+// UPDATE M:N - Change role (REQUIRED!)
+app.put('/update-user-studyset', function(req, res) {
+    let data = req.body;
+    let query1 = `UPDATE User_StudySets SET role = ? WHERE user_id = ? AND set_id = ?`;
+    let values = [data['role'], data['user_id'], data['set_id']];
+    
+    db.pool.query(query1, values, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(200);
+    });
+});
+
+// DELETE M:N (REQUIRED!)
+app.delete('/delete-user-studyset/:user_id/:set_id', function(req, res) {
+    let userId = req.params.user_id;
+    let setId = req.params.set_id;
+    let query1 = `DELETE FROM User_StudySets WHERE user_id = ? AND set_id = ?`;
+    
+    db.pool.query(query1, [userId, setId], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(204);
+    });
+});
+
+// ==================== USER_QUIZZES CUD ====================
+
+// CREATE
+app.post('/add-user-quiz', function(req, res) {
+    let data = req.body;
+    let query1 = `INSERT INTO User_Quizzes (user_id, quiz_id) VALUES (?, ?)`;
+    let values = [data['user_id'], data['quiz_id']];
+    
+    db.pool.query(query1, values, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        res.redirect('/user-quizzes');
+    });
+});
+
+// DELETE M:N
+app.delete('/delete-user-quiz/:user_id/:quiz_id', function(req, res) {
+    let userId = req.params.user_id;
+    let quizId = req.params.quiz_id;
+    let query1 = `DELETE FROM User_Quizzes WHERE user_id = ? AND quiz_id = ?`;
+    
+    db.pool.query(query1, [userId, quizId], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(204);
+    });
+});
+
+// ==================== QUIZ_FLASHCARDS CUD ====================
+
+// CREATE
+app.post('/add-quiz-flashcard', function(req, res) {
+    let data = req.body;
+    
+    // Get next question order
+    let query1 = `SELECT COALESCE(MAX(question_order), 0) + 1 AS next_order 
+                  FROM Quiz_Flashcards WHERE quiz_id = ?`;
+    
+    db.pool.query(query1, [data['quiz_id']], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        
+        let nextOrder = rows[0].next_order;
+        let query2 = `INSERT INTO Quiz_Flashcards (quiz_id, card_id, question_order) VALUES (?, ?, ?)`;
+        
+        db.pool.query(query2, [data['quiz_id'], data['card_id'], nextOrder], function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+            }
+            res.redirect('/quiz-flashcards');
+        });
+    });
+});
+
+// UPDATE M:N - Change question order (REQUIRED!)
+app.put('/update-quiz-flashcard', function(req, res) {
+    let data = req.body;
+    let query1 = `UPDATE Quiz_Flashcards SET question_order = ? WHERE quiz_id = ? AND card_id = ?`;
+    let values = [data['question_order'], data['quiz_id'], data['card_id']];
+    
+    db.pool.query(query1, values, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(200);
+    });
+});
+
+// DELETE M:N
+app.delete('/delete-quiz-flashcard/:quiz_id/:card_id', function(req, res) {
+    let quizId = req.params.quiz_id;
+    let cardId = req.params.card_id;
+    let query1 = `DELETE FROM Quiz_Flashcards WHERE quiz_id = ? AND card_id = ?`;
+    
+    db.pool.query(query1, [quizId, cardId], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(204);
+    });
+});
+
 /*
     LISTENER
 */

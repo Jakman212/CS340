@@ -57,7 +57,8 @@
             <td>{{this.shared}}</td>
             <td>
                 {{! DELETE form - will be functional in next step }}
-                <form class="delete-form" method="POST" action="/user-studysets/delete/{{this.user_id}}-{{this.set_id}}">
+                <form class="delete-form" method="POST" action="/user-studysets/delete/{{this.user_id}}/{{this.set_id}}">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn-delete">Remove Access</button>
                 </form>
             </td>
@@ -72,7 +73,7 @@
 {{! CREATE - Form to share study set with user }}
 <h2>Share Study Set with User</h2>
 
-<form class="cuForm" id="share-studyset-form" method="POST" action="/user-studysets/create">
+<form class="cuForm" id="share-studyset-form" method="POST" action="/add-user-studyset">
     <label for="user_id">Select User:</label>
     <select name="user_id" id="user_id" required>
         <option value="" disabled selected>Choose a user...</option>

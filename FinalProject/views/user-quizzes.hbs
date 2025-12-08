@@ -67,7 +67,8 @@
             <td>{{this.attempt_date}}</td>
             <td>
                 {{! DELETE form - will be functional in next step }}
-                <form class="delete-form" method="POST" action="/user-quizzes/delete/{{this.user_id}}-{{this.quiz_id}}">
+                <form class="delete-form" method="POST" action="/user-quizzes/delete/{{this.user_id}}/{{this.quiz_id}}">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn-delete">Delete Attempt</button>
                 </form>
             </td>
@@ -82,7 +83,7 @@
 {{! CREATE - Form to record quiz attempt }}
 <h2>Record Quiz Attempt</h2>
 
-<form class="cuForm" id="create-quiz-attempt-form" method="POST" action="/user-quizzes/create">
+<form class="cuForm" id="create-quiz-attempt-form" method="POST" action="/add-user-quiz">
     <label for="user_id">Select User:</label>
     <select name="user_id" id="user_id" required>
         <option value="" disabled selected>Choose a user...</option>
