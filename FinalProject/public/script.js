@@ -1,5 +1,30 @@
-// public/script.js
-// Client-side JavaScript for Study Application
+/*
+ * ============================================================
+ * script.js — Study Application Client-Side Scripts (CS340)
+ * Group 69 — Sasan Pourassef & Jeremy Dempsey
+ * Oregon State University
+ *
+ * Description:
+ *   This file contains client-side JavaScript functionality
+ *   for the Study Application. It handles:
+ *     • RESET button functionality with fetch API
+ *     • Form validation and user interactions
+ *     • Dynamic page refreshing after database operations
+ *     • Alert notifications for user feedback
+ *
+ * Purpose:
+ *   This script enhances the user experience by providing:
+ *     1) Asynchronous database reset without full page redirect
+ *     2) Success/error notifications via alerts
+ *     3) Current page refresh after RESET operation
+ *     4) Client-side validation and interaction handling
+ *
+ * Sources:
+ *   • This file was created based on standard JavaScript
+ *     practices and customized for the Study Application.
+ *
+ * ============================================================
+ */
 
 // Set today's date as default for date inputs
 document.addEventListener('DOMContentLoaded', function() {
