@@ -78,7 +78,7 @@
     <select name="quiz_id" id="quiz_id" required>
         <option value="" disabled selected>Choose a quiz...</option>
         {{#each quizzes}}
-        <option value="{{this.quiz_id}}">{{this.title}}</option>
+        <option value="{{this.quiz_id}}">Quiz #{{this.quiz_id}}</option>
         {{/each}}
     </select>
 
@@ -103,7 +103,7 @@
     <select name="quiz_id" id="filter_quiz_id" onchange="this.form.submit()">
         <option value="">All Quizzes</option>
         {{#each quizzes}}
-        <option value="{{this.quiz_id}}">{{this.title}}</option>
+        <option value="{{this.quiz_id}}">Quiz #{{this.quiz_id}}</option>
         {{/each}}
     </select>
 </form>
