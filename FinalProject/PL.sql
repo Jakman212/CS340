@@ -36,6 +36,9 @@ DROP PROCEDURE IF EXISTS sp_delete_user;
      1) Temporarily disable FK checks
      2) DELETE all rows (junctions first, then children, then parents)
      3) Re-seed minimal demo data that matches UI pages
+
+     Sources:
+       Our original work, adapted from course examples.
    ------------------------------------------------------------- */
 DELIMITER //
 CREATE PROCEDURE sp_reset_study_app()
@@ -134,6 +137,9 @@ DELIMITER ;
 -- How to test:
 --   1) CALL sp_demo_delete_user();  -- user disappears
 --   2) CALL sp_reset_study_app();   -- user & seed return
+
+-- Sources:
+--   Our original work, adapted from course examples.
 -- -------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE sp_demo_delete_user()
