@@ -66,6 +66,9 @@ BEGIN
   /* ---------------------------------------------------------
      Seed data (AUTO_INCREMENT will start at 1 on fresh dbs;
      even if not, this still yields usable demo rows).
+
+     Sources:
+      AI was used to help generate sample data
      --------------------------------------------------------- */
 
   /* Users */
