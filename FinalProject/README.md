@@ -1,2 +1,5 @@
-# CS340
-Intro to Databases
+Overview
+Students from various universities and schools can often struggle to organize their study materials through all of their different subjects they have to track. Many students rely on scattered tools, a combination of Google Docs, Quizlet, and even physical flashcards in order to prepare and practice for exams. This results in duplication, lost progress data, and very limited personalization.
+Our study app aims to create a database driven study website that allows users to create, review, and track flashcards, quizzes, and topic-filtered vocabulary lists all in one place. Each user will be able to keep multiple study sets for different modules and topics, which allows a streamlined organization and an easy way to get learning materials. This system will support hundreds of users, with each maintaining dozens of study sets across various topics.
+The platform will be able to handle up to 10,000 flashcards, 5,000 quiz attempts, and over 1,000 sessions at a time, ensuring scalability for classroom or institutional use. The platform allows users to track their learning progress and performance across quizzes, offering both personalization and analytics based on insights.
+In this initial phase, we will focus on implementing core user functionality: flashcard creation, quiz generation, and progress tracking. These features will be built on a robust, scalable relational database structure that can later support advanced features such as analytics, collaborative study groups or adaptive learning recommendations.
